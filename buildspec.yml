@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain kahula --domain-owner 802306197541 --query authorizationToken --output text`
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building code...
+      - ./mvnw -B clean package
+      - echo "version- $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) hash- $(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-5)"
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Running the terraform plan...
+      - ./run.sh

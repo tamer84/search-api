@@ -1,0 +1,193 @@
+##########  Queries  ##############
+
+type Query {
+
+
+
+  """
+  Get ice cream product by Tango identifier (productId)
+  """
+  iceCream(market: String!, id: String!): IceCreamStockUnit
+
+  iceCreams(req:IceCreamReq!) : IceCreamResponse
+
+
+}
+
+##############  Query Input  ##############
+input IceCreamReq {
+  market: String
+  limit: Int
+  offset: Int
+  sort: IceCreamSort
+  where: IceCreamFilters
+}
+input IceCreamSort {
+  createdDate: SortDirection
+  lastModifiedDate: SortDirection
+  variantPrice: SortDirection
+}
+input IceCreamFilters {
+  productCode: StringCondition
+  code: StringCondition
+  price: FloatCondition
+}
+
+
+enum SortDirection { asc, desc }
+
+input BoolCondition {
+  "equals"
+  eq: Boolean
+  "not equals"
+  neq: Boolean
+}
+
+input DateCondition {
+  "equals"
+  eq: String
+  "not equals"
+  neq: String
+  "greater than"
+  gt: String
+  "greater than or equal"
+  gte: String
+  "less than"
+  lt: String
+  "less than or equal"
+  lte: String
+}
+
+input FloatCondition {
+  "equals"
+  eq: Float
+  "not equals"
+  neq: Float
+  "greater than"
+  gt: Float
+  "greater than or equal"
+  gte: Float
+  "less than"
+  lt: Float
+  "less than or equal"
+  lte: Float
+  "is in list"
+  in: [Float!]
+  "not in list"
+  nin: [Float!]
+}
+
+input IntCondition {
+  "equals"
+  eq: Int
+  "not equals"
+  neq: Int
+  "greater than"
+  gt: Int
+  "greater than or equal"
+  gte: Int
+  "less than"
+  lt: Int
+  "less than or equal"
+  lte: Int
+  "is in list"
+  in: [Int!]
+  "is not in list"
+  nin: [Int!]
+}
+
+
+input StringCondition {
+  "equals"
+  eq: String
+  "not equals"
+  neq: String
+  "is in list"
+  in: [String!]
+  "is not in list"
+  nin: [String!]
+}
+
+#########  API Responses  #################
+
+
+#########  Scalar Types  #################
+scalar Url
+scalar Object
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+#############################  SHARED  ##########################
+type Aggregate {
+  overall: Object
+  counts: Object
+  stats: Object
+  terms: Object
+}
+type Metadata {
+  "total possible results"
+  total: Int!
+  "size of results requested"
+  limit: Int!
+  "offset position"
+  offset: Int!
+}
+
+#############################  CONNECT  ##########################
+type IceCreamResponse {
+  metadata: Object
+  products: [IceCreamStockUnit]
+}
+type IceCreamStockUnit {
+  id: String
+  createdDate: String
+  lastModifiedDate: String
+  media: Media
+  metadata: IceCreamStockMetadata
+  pricing: Pricing
+  productRecord: ProductRecord,
+  "Information about data violations"
+  violations: [Violation]
+}
+
+
+type Image {
+  altText: String
+  format: String
+  headline: String
+  imageType: String
+  url: String
+  youtubeVideoUrl: String
+}
+type Media {
+  primaryImage: Image
+  images: [Image]
+}
+type Price {
+  currency: String
+  value: Float
+}
+
+type Pricing {
+  price: Price
+}
+type ProductRecord {
+  code: String
+  productName: String
+  coneType: String
+  flavour: String
+  topping: String
+  shortDescription: String
+}
+type IceCreamStockMetadata {
+  market: String
+  sourceSystem: String
+}
+
+type Violation {
+  domain: String
+  code: String
+}
+
+
