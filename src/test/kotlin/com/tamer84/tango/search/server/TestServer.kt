@@ -14,9 +14,7 @@ import java.util.*
 
 private val log = LoggerFactory.getLogger("TestServer")
 
-/**
- * {"domain":"SEARCH","perms":[],"countries":[{"code":"FR","perms":["READ"],"companies":[{"id":"GC0003921","perms":["READ"]},{"id":"GC0011485","outlets":[{"id":"GS0014401","perms":["READ"]}]}]}]}
- */
+
 fun main() {
 
     /*
